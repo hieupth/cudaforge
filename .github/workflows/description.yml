@@ -3,7 +3,7 @@ name: Update Description
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Build base"]
+    workflows: ["Build images"]
     types:
       - completed
   push:
@@ -16,9 +16,6 @@ jobs:
   update-description:
     runs-on: ubuntu-latest
     if: ${{github.event.workflow_run.conclusion == 'success'}}
-    strategy:
-      matrix:
-        forge: [mamba, conda]
     steps:
     - 
       name: Login to DockerHub
@@ -35,4 +32,4 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ secrets.DOCKERHUB_USERNAME }}/${{matrix.forge}}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/mamba

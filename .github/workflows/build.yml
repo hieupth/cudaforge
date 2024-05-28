@@ -1,4 +1,4 @@
-name: Build base
+name: Build images
 
 on:
   workflow_dispatch:
@@ -6,19 +6,11 @@ on:
     branches:
       - 'main'
     paths:
-      - 'ubuntu.Dockerfile'
+      - '*.Dockerfile'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        forge: [mamba, conda]
-        include:
-          - forge: mamba
-            miniforge: Mambaforge
-          - forge: conda
-            miniforge: Miniforge3
     steps:
       - 
         name: Set up QEMU
@@ -42,8 +34,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          file: ubuntu.Dockerfile
+          file: Dockerfile
           platforms: linux/amd64,linux/arm64,linux/ppc64le
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/${{matrix.forge}}
-          build-args: |
-            MINIFORGE=${{matrix.miniforge}}
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/mamba
