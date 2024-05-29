@@ -6,7 +6,7 @@ on:
     branches:
       - 'main'
     paths:
-      - '*.Dockerfile'
+      - 'Dockerfile'
 
 jobs:
   build:
@@ -37,3 +37,15 @@ jobs:
           file: Dockerfile
           platforms: linux/amd64,linux/arm64,linux/ppc64le
           tags: ${{secrets.DOCKERHUB_USERNAME}}/mamba
+          build-args: |
+            PACKAGES=git git-lfs
+      - 
+        name: Build devel
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/ppc64le
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/mamba:devel
+          build-args: |
+            PACKAGES=wget git git-lfs build-essential
