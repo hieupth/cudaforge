@@ -38,7 +38,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/ppc64le
           tags: ${{secrets.DOCKERHUB_USERNAME}}/mamba
           build-args: |
-            PACKAGES=git git-lfs
+            PACKAGES=wget git
       - 
         name: Build devel
         uses: docker/build-push-action@v5
